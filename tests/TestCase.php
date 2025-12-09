@@ -20,6 +20,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->withoutVite();
+        activity()->disableLogging();
     }
 
     final public function asUser(): self
