@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\Settings\ActivityLogs\Schemas;
 
+use App\Filament\Admin\Resources\Settings\Roles\RoleResource;
 use App\Filament\Admin\Resources\Settings\Users\UserResource;
 use App\Models\Activity;
+use App\Models\Role;
 use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -31,14 +33,17 @@ final class ActivityLogInfolist
                             ->badge(),
                         TextEntry::make('subject')
                             ->label(__('Subject'))
-                            ->formatStateUsing(function (Activity $record): string {
+                            ->formatStateUsing(function (Activity $record): mixed {
                                 if (! $record->subject) {
                                     return __('N/A');
                                 }
 
-                                $name = $record->subject->getAttribute('name');
-
-                                return is_scalar($name) ? (string) $name : 'Unknown';
+                                // Handle different model types with different name attributes
+                                return match ($record->subject_type) {
+                                    User::class => $record->subject->getAttribute('name'),
+                                    Role::class => $record->subject->getAttribute('display_name'),
+                                    default => __('Unknown'),
+                                };
                             })
                             ->url(function (Activity $record): ?string {
                                 $subject = $record->subject;
@@ -48,6 +53,7 @@ final class ActivityLogInfolist
 
                                 return match ($record->subject_type) {
                                     User::class => UserResource::getUrl('view', ['record' => $subject]),
+                                    Role::class => RoleResource::getUrl('view', ['record' => $subject]),
                                     default => null,
                                 };
                             })
@@ -56,14 +62,17 @@ final class ActivityLogInfolist
                             ->label(__('Performed By'))
                             ->placeholder(__('System'))
                             ->badge()
-                            ->formatStateUsing(function (Activity $record): string {
+                            ->formatStateUsing(function (Activity $record): mixed {
                                 if (! $record->causer) {
                                     return __('System');
                                 }
 
-                                $name = $record->causer->getAttribute('name');
-
-                                return is_scalar($name) ? (string) $name : __('Unknown');
+                                // Handle different model types with different name attributes
+                                return match ($record->causer_type) {
+                                    User::class => $record->causer->getAttribute('name'),
+                                    Role::class => $record->causer->getAttribute('display_name'),
+                                    default => __('Unknown'),
+                                };
                             })
                             ->url(function (Activity $record): ?string {
                                 if (! $record->causer) {
@@ -74,6 +83,7 @@ final class ActivityLogInfolist
 
                                 return match ($record->causer_type) {
                                     User::class => UserResource::getUrl('view', ['record' => $causer]),
+                                    Role::class => RoleResource::getUrl('view', ['record' => $causer]),
                                     default => null,
                                 };
                             })

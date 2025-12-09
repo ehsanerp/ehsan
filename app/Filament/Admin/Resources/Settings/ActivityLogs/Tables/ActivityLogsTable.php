@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\Settings\ActivityLogs\Tables;
 
+use App\Filament\Admin\Resources\Settings\Roles\RoleResource;
 use App\Filament\Admin\Resources\Settings\Users\UserResource;
 use App\Models\Activity;
+use App\Models\Role;
 use App\Models\User;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -34,15 +36,17 @@ final class ActivityLogsTable
                     ->badge(),
                 TextColumn::make('subject')
                     ->label(__('Subject'))
-                    ->formatStateUsing(function (Activity $record): string {
+                    ->formatStateUsing(function (Activity $record): mixed {
                         if (! $record->subject) {
                             return __('N/A');
                         }
 
                         // Handle different model types with different name attributes
-                        $name = $record->subject->getAttribute('name');
-
-                        return is_scalar($name) ? (string) $name : __('Unknown');
+                        return match ($record->subject_type) {
+                            User::class => $record->subject->getAttribute('name'),
+                            Role::class => $record->subject->getAttribute('display_name'),
+                            default => __('Unknown'),
+                        };
                     })
                     ->url(function (Activity $record): ?string {
                         $subject = $record->subject;
@@ -50,8 +54,10 @@ final class ActivityLogsTable
                             return null;
                         }
 
+                        // Handle different model types with different name attributes
                         return match ($record->subject_type) {
                             User::class => UserResource::getUrl('view', ['record' => $subject]),
+                            Role::class => RoleResource::getUrl('view', ['record' => $subject]),
                             default => null,
                         };
                     })
@@ -61,14 +67,17 @@ final class ActivityLogsTable
                 TextColumn::make('causer')
                     ->label(__('Performed By'))
                     ->placeholder(__('System'))
-                    ->formatStateUsing(function (Activity $record): string {
+                    ->formatStateUsing(function (Activity $record): mixed {
                         if (! $record->causer) {
                             return __('System');
                         }
 
-                        $name = $record->causer->getAttribute('name');
-
-                        return is_scalar($name) ? (string) $name : __('Unknown');
+                        // Handle different model types with different name attributes
+                        return match ($record->causer_type) {
+                            User::class => $record->causer->getAttribute('name'),
+                            Role::class => $record->causer->getAttribute('display_name'),
+                            default => __('Unknown'),
+                        };
                     })
                     ->url(function (Activity $record): ?string {
                         if (! $record->causer) {
@@ -79,6 +88,7 @@ final class ActivityLogsTable
 
                         return match ($record->causer_type) {
                             User::class => UserResource::getUrl('view', ['record' => $causer]),
+                            Role::class => RoleResource::getUrl('view', ['record' => $causer]),
                             default => null,
                         };
                     })
@@ -101,6 +111,7 @@ final class ActivityLogsTable
                 SelectFilter::make('subject_type')
                     ->options([
                         User::class => __('User'),
+                        Role::class => __('Role'),
                     ]),
             ])
             ->recordActions([
