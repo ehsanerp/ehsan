@@ -23,9 +23,4 @@ return new class extends Migration
             $table->index('log_name');
         });
     }
-
-    public function down(): void
-    {
-        Schema::connection(config('activitylog.database_connection'))->dropIfExists(config('activitylog.table_name'));
-    }
 };
