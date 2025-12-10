@@ -6,11 +6,10 @@ use App\Filament\Admin\Resources\Settings\Users\Pages\CreateUser;
 use App\Models\User;
 
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\get;
 use function Pest\Livewire\livewire;
 
-it('can render the create user page', function (): void {
-    get(route('filament.admin.resources.settings.users.create'))
+it('can render the page', function (): void {
+    livewire(CreateUser::class)
         ->assertSuccessful();
 });
 

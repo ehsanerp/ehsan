@@ -30,6 +30,11 @@ final class UserResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    public static function isScopedToTenant(): bool
+    {
+        return false;
+    }
+
     #[Override]
     public static function form(Schema $schema): Schema
     {

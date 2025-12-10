@@ -143,4 +143,16 @@ return [
         'password' => env('DEFAULT_USER_PASSWORD', 'password'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Branch
+    |--------------------------------------------------------------------------
+    | This configuration option determines the default branch name that
+    | will be used to create the first branch when the application
+    | is installed.
+    |
+    */
+    'default_branch' => [
+        'name' => env('DEFAULT_BRANCH_NAME', 'Main Branch'),
+    ],
 ];

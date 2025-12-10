@@ -29,6 +29,11 @@ final class ActivityLogResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    public static function isScopedToTenant(): bool
+    {
+        return false;
+    }
+
     public static function getModelLabel(): string
     {
         return __('Activity Log');

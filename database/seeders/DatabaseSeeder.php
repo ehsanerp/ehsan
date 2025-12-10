@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,10 +21,14 @@ final class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionTableSeeder::class);
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => config('app.default_user.name'),
             'email' => config('app.default_user.email'),
             'password' => Hash::make(config('app.default_user.password')),
         ])->assignRole('admin');
+        $branch = Branch::factory()->primary()->create([
+            'name' => config('app.default_branch.name'),
+        ]);
+        $user->allowedBranches()->attach($branch);
     }
 }

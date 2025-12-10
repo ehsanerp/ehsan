@@ -91,7 +91,7 @@ final class UserPanelProvider extends PanelProvider
                     ->url(fn (): string => route('filament.user.auth.profile')),
                 'admin' => Action::make('admin')
                     ->label(__('Admin Panel'))
-                    ->url(fn (): string => route('filament.admin.pages.dashboard'))
+                    ->url(fn (): string => url('/admin'))
                     ->icon('heroicon-m-shield-check')
                     ->visible(function () {
                         /** @var Panel $panel */

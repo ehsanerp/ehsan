@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Http\Middleware\SetLocale;
+use App\Models\Branch;
 use App\Settings\GeneralSettings;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
@@ -54,6 +55,7 @@ final class AdminPanelProvider extends PanelProvider
                 }
             })
             ->brandLogoHeight('3.5rem')
+            ->tenant(Branch::class)
             ->emailVerification()
             ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css')
@@ -92,7 +94,7 @@ final class AdminPanelProvider extends PanelProvider
                     ->url(fn (): string => route('filament.user.auth.profile')),
                 'admin' => Action::make('admin')
                     ->label(__('Admin Panel'))
-                    ->url(fn (): string => route('filament.admin.pages.dashboard'))
+                    ->url(fn (): string => url('/admin'))
                     ->icon('heroicon-m-shield-check')
                     ->visible(function () {
                         /** @var Panel $panel */

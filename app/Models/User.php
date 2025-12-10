@@ -10,12 +10,16 @@ use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
 use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -27,7 +31,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property ?string $app_authentication_secret
  * @property ?array<string> $app_authentication_recovery_codes
  */
-final class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasAvatar, HasEmailAuthentication, HasMedia, MustVerifyEmail
+final class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasAvatar, HasEmailAuthentication, HasMedia, HasTenants, MustVerifyEmail
 {
     use CausesActivity;
 
@@ -105,6 +109,34 @@ final class User extends Authenticatable implements FilamentUser, HasAppAuthenti
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(fn (string $eventName): string => __('The user has been :event', ['event' => $eventName]));
+    }
+
+    /**
+     * Get the tenants that the user belongs to.
+     *
+     * @return Collection<int, Branch>
+     */
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->allowedBranches()->get();
+    }
+
+    /**
+     * Check if the user can access the given tenant.
+     */
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->allowedBranches()->whereKey($tenant->getKey())->exists();
+    }
+
+    /**
+     * Get the branches that the user is allowed to access.
+     *
+     * @return BelongsToMany<Branch, $this>
+     */
+    public function allowedBranches(): BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'branch_has_users');
     }
 
     /**

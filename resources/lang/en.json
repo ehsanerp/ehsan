@@ -61,6 +61,7 @@
     "Set the default timezone for the application.": "Set the default timezone for the application.",
     "Subject": "Subject",
     "System": "System",
+    "The branch has been :event": "The branch has been :event",
     "The role has been :event": "The role has been :event",
     "The user has been :event": "The user has been :event",
     "Unknown": "Unknown",

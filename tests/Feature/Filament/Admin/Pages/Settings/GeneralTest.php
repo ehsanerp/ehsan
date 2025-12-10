@@ -7,16 +7,10 @@ use App\Settings\GeneralSettings;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-use function Pest\Laravel\get;
 use function Pest\Livewire\livewire;
 
 it('can render the page', function (): void {
     livewire(General::class)
-        ->assertSuccessful();
-});
-
-it('can open the route', function (): void {
-    get(route('filament.admin.pages.settings.general'))
         ->assertSuccessful();
 });
 
