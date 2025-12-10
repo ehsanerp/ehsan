@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Http\Middleware\SetLocale;
+use App\Settings\GeneralSettings;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -21,7 +22,9 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Throwable;
 
 final class AdminPanelProvider extends PanelProvider
 {
@@ -30,6 +33,27 @@ final class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
+            ->brandName(function () {
+                try {
+                    return resolve(GeneralSettings::class)->brandName;
+                } catch (Throwable) {
+                    return config('app.name');
+                }
+            })
+            ->brandLogo(function (): ?string {
+                try {
+                    $logo = resolve(GeneralSettings::class)->brandLogo;
+
+                    if (! $logo) {
+                        return null;
+                    }
+
+                    return Storage::url($logo);
+                } catch (Throwable) {
+                    return null;
+                }
+            })
+            ->brandLogoHeight('3.5rem')
             ->emailVerification()
             ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css')

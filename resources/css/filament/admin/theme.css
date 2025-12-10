@@ -16,3 +16,7 @@
     border-right: 1px solid #18181B;
     background-color: var(--gray-900);
 }
+
+.fi-fo-field-has-inline-label > .fi-fo-field-label-col > .fi-fo-field-label-ctn {
+    @apply inline;
+}

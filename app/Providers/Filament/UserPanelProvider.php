@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\User\Pages\MyProfile;
 use App\Http\Middleware\SetLocale;
+use App\Settings\GeneralSettings;
 use Filament\Actions\Action;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\Email\EmailAuthentication;
@@ -25,6 +26,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Throwable;
 
 final class UserPanelProvider extends PanelProvider
 {
@@ -34,6 +36,13 @@ final class UserPanelProvider extends PanelProvider
             ->default()
             ->id('user')
             ->path('user')
+            ->brandName(function () {
+                try {
+                    return resolve(GeneralSettings::class)->brandName;
+                } catch (Throwable) {
+                    return config('app.name');
+                }
+            })
             ->login(Login::class)
             ->profile(MyProfile::class, isSimple: false)
             ->emailVerification()
