@@ -20,3 +20,7 @@
 .fi-fo-field-has-inline-label > .fi-fo-field-label-col > .fi-fo-field-label-ctn {
     @apply inline;
 }
+
+.fi-fo-field-has-inline-label>.fi-fo-field-label-col>.fi-fo-field-label-ctn > .fi-sc {
+    @apply justify-start;
+}

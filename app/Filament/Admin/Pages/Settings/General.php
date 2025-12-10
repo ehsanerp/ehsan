@@ -44,7 +44,8 @@ final class General extends SettingsPage
                         TextInput::make('brandName')
                             ->label(__('Brand name'))
                             ->required()
-                            ->maxLength(20),
+                            ->maxLength(20)
+                            ->hint(__('Set the brand name for the application.')),
                         FileUpload::make('brandLogo')
                             ->label(__('Brand logo'))
                             ->image()

@@ -44,11 +44,13 @@ final class Preferences extends SettingsPage
                         Select::make('locale')
                             ->options(LocaleFinder::getAvailableLocales())
                             ->required()
-                            ->searchable(),
+                            ->searchable()
+                            ->hint(__('Set the default language for the application interface.')),
                         Select::make('timezone')
                             ->options($timezoneOptions)
                             ->required()
-                            ->searchable(),
+                            ->searchable()
+                            ->hint(__('Set the default timezone for the application.')),
                         Radio::make('dateFormat')
                             ->live()
                             ->formatStateUsing(fn (string $state): string => in_array($state, ['Y-m-d', 'd-m-Y', 'm-d-Y']) ? $state : 'custom')
@@ -58,7 +60,8 @@ final class Preferences extends SettingsPage
                                 'm-d-Y' => '04-17-2017',
                                 'custom' => __('Custom'),
                             ])
-                            ->required(),
+                            ->required()
+                            ->hint(__('Choose how dates will be displayed throughout the application.')),
                         TextInput::make('customDateFormat')
                             ->live()
                             ->hiddenLabel()
@@ -82,7 +85,8 @@ final class Preferences extends SettingsPage
                                 'H:i' => '23:45',
                                 'custom' => __('Custom'),
                             ])
-                            ->required(),
+                            ->required()
+                            ->hint(__('Choose how times will be displayed throughout the application.')),
                         TextInput::make('customTimeFormat')
                             ->live()
                             ->hiddenLabel()
