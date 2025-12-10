@@ -13,6 +13,7 @@ use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 final class ActivityLogInfolist
 {
@@ -25,14 +26,18 @@ final class ActivityLogInfolist
                         TextEntry::make('log_name')
                             ->label(__('Log Name'))
                             ->badge(),
-                        TextEntry::make('description')
-                            ->label(__('Description')),
+                        TextEntry::make('event')
+                            ->label(__('Operation')),
                         TextEntry::make('resource')
                             ->label(__('Resource'))
-                            ->getStateUsing(fn (Activity $record): string => class_basename($record->subject_type ?? ''))
-                            ->badge(),
+                            ->getStateUsing(fn (Activity $record): string => match ($record->subject_type) {
+                                User::class => UserResource::getModelLabel(),
+                                Role::class => RoleResource::getModelLabel(),
+                                default => class_basename($record->subject_type ?? ''),
+                            }),
                         TextEntry::make('subject')
                             ->label(__('Subject'))
+                            ->icon(Heroicon::ArrowTopRightOnSquare)
                             ->formatStateUsing(function (Activity $record): mixed {
                                 if (! $record->subject) {
                                     return __('N/A');
@@ -61,7 +66,7 @@ final class ActivityLogInfolist
                         TextEntry::make('causer')
                             ->label(__('Performed By'))
                             ->placeholder(__('System'))
-                            ->badge()
+                            ->icon(Heroicon::ArrowTopRightOnSquare)
                             ->formatStateUsing(function (Activity $record): mixed {
                                 if (! $record->causer) {
                                     return __('System');
@@ -91,6 +96,9 @@ final class ActivityLogInfolist
                         TextEntry::make('created_at')
                             ->label(__('Created At'))
                             ->dateTime(),
+                        TextEntry::make('description')
+                            ->label(__('Description'))
+                            ->columnSpan(2),
                     ])
                     ->columns(2),
                 Section::make(__('Properties'))

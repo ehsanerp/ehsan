@@ -10,6 +10,7 @@ use App\Models\Activity;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Actions\ViewAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -26,16 +27,20 @@ final class ActivityLogsTable
                     ->badge()
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('description')
-                    ->label(__('Description'))
+                TextColumn::make('event')
+                    ->label(__('Operation'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('resource')
                     ->label(__('Resource'))
-                    ->getStateUsing(fn (Activity $record): string => class_basename($record->subject_type ?? ''))
-                    ->badge(),
+                    ->getStateUsing(fn (Activity $record): string => match ($record->subject_type) {
+                        User::class => UserResource::getModelLabel(),
+                        Role::class => RoleResource::getModelLabel(),
+                        default => class_basename($record->subject_type ?? ''),
+                    }),
                 TextColumn::make('subject')
                     ->label(__('Subject'))
+                    ->icon(Heroicon::ArrowTopRightOnSquare)
                     ->formatStateUsing(function (Activity $record): mixed {
                         if (! $record->subject) {
                             return __('N/A');
@@ -67,6 +72,7 @@ final class ActivityLogsTable
                 TextColumn::make('causer')
                     ->label(__('Performed By'))
                     ->placeholder(__('System'))
+                    ->icon(Heroicon::ArrowTopRightOnSquare)
                     ->formatStateUsing(function (Activity $record): mixed {
                         if (! $record->causer) {
                             return __('System');
@@ -93,7 +99,6 @@ final class ActivityLogsTable
                         };
                     })
                     ->openUrlInNewTab()
-                    ->badge()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')

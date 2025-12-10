@@ -29,7 +29,8 @@ final class Role extends BaseModel
         return LogOptions::defaults()
             ->logOnly(['name', 'display_name', 'guard_name', 'is_deletable', 'is_editable'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn (string $eventName): string => __('The role has been :event', ['event' => $eventName]));
     }
 
     /**
