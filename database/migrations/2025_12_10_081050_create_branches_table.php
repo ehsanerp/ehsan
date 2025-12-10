@@ -17,8 +17,6 @@ return new class() extends Migration
             $table->text('address')->nullable();
             $table->string('phone_no')->nullable();
             $table->string('email')->nullable();
-            $table->string('bank_name')->nullable();
-            $table->string('bank_account_no')->nullable();
             $table->timestamps();
         });
 

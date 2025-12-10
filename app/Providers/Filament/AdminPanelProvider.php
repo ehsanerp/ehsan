@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Pages\Tenancy\CreateBranch;
+use App\Filament\Admin\Pages\Tenancy\EditBranchProfile;
 use App\Http\Middleware\SetLocale;
 use App\Models\Branch;
 use App\Settings\GeneralSettings;
@@ -16,6 +18,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -56,6 +59,9 @@ final class AdminPanelProvider extends PanelProvider
             })
             ->brandLogoHeight('3.5rem')
             ->tenant(Branch::class)
+            ->tenantRegistration(CreateBranch::class)
+            ->tenantProfile(EditBranchProfile::class)
+            ->tenantRoutePrefix('branch')
             ->emailVerification()
             ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css')
@@ -88,6 +94,9 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->tenantMenuItems([
+                'profile' => fn (Action $action): Action => $action->icon(Heroicon::PencilSquare),
             ])
             ->userMenuItems([
                 'profile' => fn (Action $action): Action => $action->label(__('My Profile'))

@@ -8,6 +8,7 @@ use Database\Factories\BranchFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Override;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -46,5 +47,30 @@ final class Branch extends Model
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(fn (string $eventName): string => __('The branch has been :event', ['event' => $eventName]));
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    #[Override]
+    protected static function booted(): void
+    {
+        self::saved(function (Branch $branch): void {
+            Branch::query()->when($branch->isPrimary(), fn ($query) => $query->whereNot('id', $branch->id)
+                ->where('is_primary', true)
+                ->update(['is_primary' => false]));
+        });
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_primary' => 'boolean',
+        ];
     }
 }
