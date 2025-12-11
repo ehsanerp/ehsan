@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Pages\Settings;
 
 use App\Helpers\LocaleFinder;
+use App\Models\User;
 use App\Settings\PreferencesSettings;
 use BackedEnum;
 use DateTimeImmutable;
@@ -15,6 +16,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Override;
 use UnitEnum;
 
@@ -27,6 +29,17 @@ final class Preferences extends SettingsPage
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?string $slug = 'settings/preferences';
+
+    public static function canAccess(): bool
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        try {
+            return $user->can('manage settings');
+        } catch (AuthorizationException $authorizationException) {
+            return $authorizationException->toResponse()->allowed();
+        }
+    }
 
     #[Override]
     public function form(Schema $schema): Schema

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Pages\Settings;
 
+use App\Models\User;
 use App\Settings\GeneralSettings;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
@@ -12,6 +13,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Override;
 use UnitEnum;
 
@@ -24,6 +26,17 @@ final class General extends SettingsPage
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?string $slug = 'settings/general';
+
+    public static function canAccess(): bool
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        try {
+            return $user->can('manage settings');
+        } catch (AuthorizationException $authorizationException) {
+            return $authorizationException->toResponse()->allowed();
+        }
+    }
 
     #[Override]
     public function getHeading(): string

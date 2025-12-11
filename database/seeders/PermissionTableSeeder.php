@@ -20,8 +20,11 @@ final class PermissionTableSeeder extends Seeder
 
         $collection = collect([
             'admin' => collect([
+                'manage branches',
                 'manage users',
                 'manage roles',
+                'manage settings',
+                'view activity logs',
             ]),
         ]);
 
