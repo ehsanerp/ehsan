@@ -7,6 +7,7 @@ namespace App\Filament\Admin\Pages\Tenancy;
 use App\Filament\Forms\Components\PhoneInput;
 use App\Models\Branch;
 use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -31,6 +32,11 @@ final class EditBranchProfile extends EditTenantProfile
                     ->description(__('Fill in the basic branch information.'))
                     ->inlineLabel()
                     ->components([
+                        SpatieMediaLibraryFileUpload::make('branch_logo')
+                            ->label(__('Branch Logo'))
+                            ->collection('branch_logo')
+                            ->image()
+                            ->avatar(),
                         TextInput::make('name')
                             ->label(__('Branch Name'))
                             ->required()
