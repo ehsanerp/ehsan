@@ -35,7 +35,7 @@ final class RoleForm
                         Select::make('guard_name')
                             ->label(__('Guard name'))
                             ->options([
-                                'web' => __('web'),
+                                'web' => 'web',
                             ])
                             ->default('web')
                             ->searchable()

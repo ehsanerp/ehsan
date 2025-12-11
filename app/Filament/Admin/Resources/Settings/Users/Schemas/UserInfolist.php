@@ -47,11 +47,11 @@ final class UserInfolist
                     ->dateTime(),
                 TextEntry::make('created_at')
                     ->label(__('Created At'))
-                    ->placeholder(__('-'))
+                    ->placeholder('-')
                     ->dateTime(),
                 TextEntry::make('updated_at')
                     ->label(__('Updated At'))
-                    ->placeholder(__('-'))
+                    ->placeholder('-')
                     ->dateTime(),
             ]),
         ];

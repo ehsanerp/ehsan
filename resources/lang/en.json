@@ -1,5 +1,4 @@
 {
-    "-": "-",
     "Account Information": "Account Information",
     "Activity Details": "Activity Details",
     "Activity Log": "Activity Log",
@@ -84,6 +83,5 @@
     "User roles allow for certain actions and access levels within the application.": "User roles allow for certain actions and access levels within the application.",
     "Users": "Users",
     "Value": "Value",
-    "View and manage the basic account details for this user.": "View and manage the basic account details for this user.",
-    "web": "web"
+    "View and manage the basic account details for this user.": "View and manage the basic account details for this user."
 }
