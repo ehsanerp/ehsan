@@ -62,6 +62,7 @@ final class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(CreateBranch::class)
             ->tenantProfile(EditBranchProfile::class)
             ->tenantRoutePrefix('branch')
+            ->databaseNotifications()
             ->emailVerification()
             ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css')

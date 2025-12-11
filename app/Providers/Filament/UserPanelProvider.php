@@ -47,6 +47,7 @@ final class UserPanelProvider extends PanelProvider
             ->profile(MyProfile::class, isSimple: false)
             ->emailVerification()
             ->passwordReset()
+            ->databaseNotifications()
             ->multiFactorAuthentication([
                 AppAuthentication::make()
                     ->recoverable()
