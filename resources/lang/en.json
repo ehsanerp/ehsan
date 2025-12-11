@@ -22,7 +22,7 @@
     "Choose which permissions this role should grant.": "Choose which permissions this role should grant.",
     "Configure general settings for the application.": "Configure general settings for the application.",
     "Configure locale, datetime and timezone preferences for the application.": "Configure locale, datetime and timezone preferences for the application.",
-    "Configure the user\\'s administrative access by assigning roles and specifying which branches they can manage.": "Configure the user\\'s administrative access by assigning roles and specifying which branches they can manage.",
+    "Configure the user's administrative access by assigning roles and specifying which branches they can manage.": "Configure the user's administrative access by assigning roles and specifying which branches they can manage.",
     "Create Branch": "Create Branch",
     "Created At": "Created At",
     "Custom": "Custom",
