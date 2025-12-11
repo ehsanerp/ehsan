@@ -6,6 +6,7 @@ namespace App\Filament\Admin\Resources\Settings\Users\Schemas;
 
 use App\Filament\Admin\Resources\Settings\Users\Pages\CreateUser;
 use App\Filament\Admin\Resources\Settings\Users\Pages\EditUser;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -50,8 +51,8 @@ final class UserForm
                             ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
                             ->helperText(fn ($livewire): array|string|null => $livewire instanceof EditUser ? __('Leave blank to keep the current password.') : null),
                     ]),
-                Section::make(__('Role'))
-                    ->description(__('Assign one or more roles to the user.'))
+                Section::make(__('Administrative Access'))
+                    ->description(__("Configure the user's administrative access by assigning roles and specifying which branches they can manage."))
                     ->inlineLabel()
                     ->schema([
                         Select::make('roles')
@@ -59,6 +60,11 @@ final class UserForm
                             ->multiple()
                             ->relationship('roles', 'display_name')
                             ->preload()
+                            ->searchable(),
+                        CheckboxList::make('allowedBranches')
+                            ->label(__('Allowed Branches'))
+                            ->relationship('allowedBranches', 'name')
+                            ->columns()
                             ->searchable(),
                     ]),
             ]);
