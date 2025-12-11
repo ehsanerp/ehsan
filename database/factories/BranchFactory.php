@@ -22,6 +22,9 @@ final class BranchFactory extends Factory
         return [
             'name' => fake()->company(),
             'is_primary' => false,
+            'address' => fake()->address(),
+            'phone_no' => fake()->phoneNumber(),
+            'email' => fake()->safeEmail(),
         ];
     }
 
