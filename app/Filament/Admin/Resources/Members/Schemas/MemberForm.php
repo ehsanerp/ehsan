@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\Members\Schemas;
 
-use Illuminate\Contracts\Support\Htmlable;
 use App\Enums\Gender;
 use App\Enums\IdentificationType;
 use App\Enums\MaritalStatus;
@@ -24,6 +23,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\Support\Htmlable;
 
 final class MemberForm
 {
