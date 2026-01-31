@@ -107,6 +107,8 @@ final class FilamentServiceProvider extends ServiceProvider
                         ->defaultTimeDisplayFormat($timeFormat)
                         ->defaultDateTimeDisplayFormat($dateFormat.' '.$timeFormat);
                 }
+
+                $component->seconds(false);
             });
         } catch (Exception) {
             // Silently fail if settings are not available
