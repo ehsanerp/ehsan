@@ -15,6 +15,7 @@ use App\Filament\Admin\Resources\Members\Schemas\MemberForm;
 use App\Filament\Admin\Resources\Members\Schemas\MemberInfolist;
 use App\Filament\Admin\Resources\Members\Tables\MembersTable;
 use App\Models\Member;
+use App\Traits\ResourceScoping;
 use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
@@ -27,11 +28,15 @@ use Override;
 
 final class MemberResource extends Resource
 {
+    use ResourceScoping;
+
     protected static ?string $model = Member::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static bool $isScopedToTenant = false;
 
     #[Override]
     public static function form(Schema $schema): Schema
@@ -86,11 +91,18 @@ final class MemberResource extends Resource
     /**
      * @return Builder<Member>
      */
-    public static function getRecordRouteBindingEloquentQuery(): Builder
+    #[Override]
+    public static function getEloquentQuery(): Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+
+        // Apply tenant-based scoping (existing Filament tenant functionality)
+        $query = self::applyTenantScoping($query);
+
+        /** @var Builder<Member> $query */
+        return $query;
     }
 }

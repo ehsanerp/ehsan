@@ -37,7 +37,7 @@ final class DevelopmentSeeder extends Seeder
             ]))
             ->has(Member::factory(10)
                 ->state(new Sequence(fn (): array => [
-                    'membership_status' => fake()->randomElement(collect(MembershipStatus::cases())->except(3)->toArray()),
+                    'membership_status' => fake()->randomElement(collect(MembershipStatus::cases())->except(3)->all()),
                 ])))
             ->create();
     }

@@ -38,7 +38,7 @@ final class MemberFactory extends Factory
             'date_of_birth' => fake()->dateTimeBetween('-80 years', '-10 years'),
             'marital_status' => MaritalStatus::cases()[array_rand(MaritalStatus::cases())]->value,
             'member_type' => MemberType::cases()[array_rand(MemberType::cases())]->value,
-            'membership_status' => fake()->randomElement(collect(MembershipStatus::cases())->except(3)->toArray()),
+            'membership_status' => fake()->randomElement(collect(MembershipStatus::cases())->except(3)->all()),
             'branch_id' => Branch::factory(),
         ];
     }
