@@ -25,6 +25,11 @@ final class Branch extends Model implements HasAvatar, HasMedia
 
     use LogsActivity;
 
+    /**
+     * Get the members that belong to the branch.
+     *
+     * @return HasMany<Member, $this>
+     */
     public function members(): HasMany
     {
         return $this->hasMany(Member::class);
