@@ -30,5 +30,10 @@ final class DatabaseSeeder extends Seeder
             'name' => config('app.default_branch.name'),
         ]);
         $user->allowedBranches()->attach($branch);
+
+        if (app()->isLocal()) {
+            // Seed development data only in local environment
+            $this->call(DevelopmentSeeder::class);
+        }
     }
 }

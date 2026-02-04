@@ -9,6 +9,7 @@ use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Override;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -23,6 +24,11 @@ final class Branch extends Model implements HasAvatar, HasMedia
     use InteractsWithMedia;
 
     use LogsActivity;
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(Member::class);
+    }
 
     /**
      * Get the users that belong to the branch.
