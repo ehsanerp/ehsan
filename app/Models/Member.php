@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Override;
 use App\Enums\Gender;
 use App\Enums\IdentificationType;
 use App\Enums\MaritalStatus;
@@ -68,6 +69,7 @@ final class Member extends Model implements HasMedia
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

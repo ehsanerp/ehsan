@@ -30,6 +30,7 @@ final class UserResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    #[Override]
     public static function isScopedToTenant(): bool
     {
         return false;
@@ -61,6 +62,7 @@ final class UserResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

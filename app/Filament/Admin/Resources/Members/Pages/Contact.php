@@ -26,6 +26,7 @@ final class Contact extends EditRecord
         return __('Contact Information');
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

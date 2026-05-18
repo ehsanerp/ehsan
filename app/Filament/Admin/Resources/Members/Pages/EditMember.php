@@ -26,6 +26,7 @@ final class EditMember extends EditRecord
         return __('Personal Information');
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

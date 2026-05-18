@@ -19,6 +19,7 @@ final class ViewMember extends ViewRecord
         return __('Overview');
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

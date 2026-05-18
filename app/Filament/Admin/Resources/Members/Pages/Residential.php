@@ -26,6 +26,7 @@ final class Residential extends EditRecord
         return __('Residential Address');
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

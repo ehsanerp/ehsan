@@ -26,6 +26,7 @@ final class Identification extends EditRecord
         return __('Identification');
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

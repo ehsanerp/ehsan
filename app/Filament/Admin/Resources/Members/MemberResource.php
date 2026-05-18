@@ -64,6 +64,7 @@ final class MemberResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [
@@ -77,6 +78,7 @@ final class MemberResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([

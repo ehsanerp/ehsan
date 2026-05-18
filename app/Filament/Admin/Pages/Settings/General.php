@@ -27,6 +27,7 @@ final class General extends SettingsPage
 
     protected static ?string $slug = 'settings/general';
 
+    #[Override]
     public static function canAccess(): bool
     {
         /** @var User $user */

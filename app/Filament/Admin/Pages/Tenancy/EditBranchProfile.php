@@ -58,6 +58,7 @@ final class EditBranchProfile extends EditTenantProfile
             ]);
     }
 
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

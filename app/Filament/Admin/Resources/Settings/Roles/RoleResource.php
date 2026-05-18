@@ -31,6 +31,7 @@ final class RoleResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    #[Override]
     public static function isScopedToTenant(): bool
     {
         return false;
@@ -62,6 +63,7 @@ final class RoleResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [

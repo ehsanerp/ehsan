@@ -101,6 +101,7 @@ final class Branch extends Model implements HasAvatar, HasMedia
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [
